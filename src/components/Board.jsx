@@ -28,7 +28,26 @@ export default function Board() {
   }
 
   function changeDayHandle(e) {
-    const numDays = e.target.dataset.btn === "prev" ? -1 : 1;
+    let numDays = 0;
+    switch (e.target.dataset.btn) {
+      case "prev": {
+        numDays = -1;
+        break;
+      }
+      case "next": {
+        numDays = 1;
+        break;
+      }
+      case "prevWeek": {
+        numDays = -7;
+        break;
+      }
+      case "nextWeek": {
+        numDays = 7;
+        break;
+      }
+    }
+
     setViewToday((prev) => {
       const oldDate = new Date(prev);
       const newDate = addDays(oldDate, numDays);
@@ -74,6 +93,13 @@ export default function Board() {
         </button>
         <button
           className="border rounded p-1 px-3"
+          data-btn="prevWeek"
+          onClick={changeDayHandle}
+        >
+          Prev Week
+        </button>
+        <button
+          className="border rounded p-1 px-3"
           data-btn="prev"
           onClick={changeDayHandle}
         >
@@ -85,6 +111,13 @@ export default function Board() {
           onClick={changeDayHandle}
         >
           Next
+        </button>
+        <button
+          className="border rounded p-1 px-3"
+          data-btn="nextWeek"
+          onClick={changeDayHandle}
+        >
+          Next Week
         </button>
       </div>
       <div>
