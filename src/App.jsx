@@ -1,6 +1,7 @@
 import React from "react";
 import mockData from "./mockData";
 import RecipeCard from "./components/RecipeCard";
+import Board from "./components/Board";
 
 const data = mockData;
 
@@ -60,34 +61,7 @@ export default function Mealplan() {
                   ))}
               </ul>
             </div>
-            <div className="board-main w-4/5 bg-white border rounded">
-              <div className="board-nav bg-white border-b p-2 text-sm flex gap-3 justify-center">
-                <h2 className="text-sm font-bold p-2">February 2024</h2>
-                <button className="border rounded p-1 px-3">Today</button>
-                <button className="border rounded p-1 px-3">Prev</button>
-                <button className="border rounded p-1 px-3">Next</button>
-              </div>
-              <div>
-                <div className="grid  grid-cols-7	 leading-6 gap-px text-center border-b text-xs  font-medium text-gray-500 bg-gray-200">
-                  <div className="py-2 bg-white">Mon 5</div>
-                  <div className="py-2 bg-white">Tue 6</div>
-                  <div className="py-2 bg-white">Wed 7</div>
-                  <div className="py-2 bg-white">Thu 8</div>
-                  <div className="py-2 bg-white">Fri 9</div>
-                  <div className="py-2 bg-white">Sat 10</div>
-                  <div className="py-2 bg-white">Sun 11</div>
-                </div>
-              </div>
-              <div className="grid  grid-cols-7	gap-px h-full bg-gray-200">
-                <div className="py-2 bg-white"></div>
-                <div className="py-2 bg-white"></div>
-                <div className="py-2 bg-white"></div>
-                <div className="py-2 bg-white"></div>
-                <div className="py-2 bg-white"></div>
-                <div className="py-2 bg-white"></div>
-                <div className="py-2 bg-white"></div>
-              </div>
-            </div>
+            <Board />
           </div>
         </div>
       </main>
