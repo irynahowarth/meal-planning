@@ -39,11 +39,7 @@ export default function Board() {
 
   return (
     <div className="board-main w-4/5 bg-white border rounded">
-      <BoardHeader
-        viewToday={viewToday}
-        changeViewToday={changeViewToday}
-        viewWeek={viewWeek}
-      />
+      <BoardHeader changeViewToday={changeViewToday} viewWeek={viewWeek} />
 
       <div>
         <div className="grid  grid-cols-7	 leading-6 gap-px text-center border-b text-xs  font-medium text-gray-500 bg-gray-200">
