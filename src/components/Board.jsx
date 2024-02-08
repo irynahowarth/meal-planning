@@ -1,4 +1,5 @@
 import React from "react";
+import BoardHeader from "./BoardHeader";
 
 const todayDate = new Date(Date.now());
 
@@ -27,99 +28,23 @@ export default function Board() {
     return dateCopy;
   }
 
-  function changeDayHandle(e) {
-    let numDays = 0;
-    switch (e.target.dataset.btn) {
-      case "prev": {
-        numDays = -1;
-        break;
-      }
-      case "next": {
-        numDays = 1;
-        break;
-      }
-      case "prevWeek": {
-        numDays = -7;
-        break;
-      }
-      case "nextWeek": {
-        numDays = 7;
-        break;
-      }
-    }
-
+  function changeViewToday(numDays) {
+    //if numDays=0 change date for today
     setViewToday((prev) => {
       const oldDate = new Date(prev);
-      const newDate = addDays(oldDate, numDays);
+      const newDate = numDays !== 0 ? addDays(oldDate, numDays) : todayDate;
       return newDate;
     });
   }
 
-  const getWeekTitle = () => {
-    if (viewWeek.length < 1) return;
-
-    let title = "";
-    const startMonth = viewWeek[0].toLocaleDateString("en-GB", {
-      month: "short",
-    });
-
-    const endMonth =
-      viewWeek[0].getMonth() === viewWeek[6].getMonth()
-        ? ""
-        : `${viewWeek[6].toLocaleDateString("en-GB", {
-            month: "short",
-          })} `;
-
-    const endYear = viewWeek[6].getFullYear();
-    const startYear =
-      viewWeek[0].getFullYear() === endYear
-        ? ""
-        : `, ${viewWeek[0].getFullYear()}`;
-
-    title = `${startMonth} ${viewWeek[0].getDate()}${startYear} - ${endMonth}${viewWeek[6].getDate()}, ${endYear}`;
-    return title;
-  };
-
-  getWeekTitle();
   return (
     <div className="board-main w-4/5 bg-white border rounded">
-      <div className="board-nav bg-white border-b p-2 text-sm flex gap-3 justify-center">
-        <h2 className="text-sm font-bold p-2">{getWeekTitle()}</h2>
-        <button
-          className="border rounded p-1 px-3"
-          onClick={() => setViewToday(todayDate)}
-        >
-          Today
-        </button>
-        <button
-          className="border rounded p-1 px-3"
-          data-btn="prevWeek"
-          onClick={changeDayHandle}
-        >
-          Prev Week
-        </button>
-        <button
-          className="border rounded p-1 px-3"
-          data-btn="prev"
-          onClick={changeDayHandle}
-        >
-          Prev
-        </button>
-        <button
-          className="border rounded p-1 px-3"
-          data-btn="next"
-          onClick={changeDayHandle}
-        >
-          Next
-        </button>
-        <button
-          className="border rounded p-1 px-3"
-          data-btn="nextWeek"
-          onClick={changeDayHandle}
-        >
-          Next Week
-        </button>
-      </div>
+      <BoardHeader
+        viewToday={viewToday}
+        changeViewToday={changeViewToday}
+        viewWeek={viewWeek}
+      />
+
       <div>
         <div className="grid  grid-cols-7	 leading-6 gap-px text-center border-b text-xs  font-medium text-gray-500 bg-gray-200">
           {viewWeek.map((date, index) => {
