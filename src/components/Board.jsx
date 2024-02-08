@@ -1,7 +1,10 @@
 import React from "react";
 import BoardHeader from "./BoardHeader";
+import BoardColumn from "./BoardColumn";
+import mockData from "../mockData";
 
 const todayDate = new Date(Date.now());
+const boardRecords = mockData.dateRecords;
 
 export default function Board() {
   const [viewWeek, setViewWeek] = React.useState([]);
@@ -37,6 +40,13 @@ export default function Board() {
     });
   }
 
+  function dateCompare(date1, date2) {
+    const year = date1.getFullYear() === date2.getFullYear();
+    const month = date1.getMonth() === date2.getMonth();
+    const day = date1.getDate() === date2.getDate();
+    return year && month && day;
+  }
+
   return (
     <div className="board-main w-4/5 bg-white border rounded">
       <BoardHeader changeViewToday={changeViewToday} viewWeek={viewWeek} />
@@ -53,13 +63,18 @@ export default function Board() {
         </div>
       </div>
       <div className="grid  grid-cols-7	gap-px h-full bg-gray-200">
-        <div className="py-2 bg-white"></div>
-        <div className="py-2 bg-white"></div>
-        <div className="py-2 bg-white"></div>
-        <div className="py-2 bg-white"></div>
-        <div className="py-2 bg-white"></div>
-        <div className="py-2 bg-white"></div>
-        <div className="py-2 bg-white"></div>
+        {viewWeek.map((viewDay) => {
+          const dayRecords = boardRecords.find((rec) => {
+            return dateCompare(viewDay, new Date(rec.date));
+          });
+          return (
+            <BoardColumn
+              key={viewDay.valueOf()}
+              viewDay={viewDay}
+              dayRecords={dayRecords}
+            />
+          );
+        })}
       </div>
     </div>
   );

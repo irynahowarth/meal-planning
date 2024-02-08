@@ -40,7 +40,7 @@ const mockData = {
   dateRecords: [
     {
       id: "1",
-      date: "05-02-2024",
+      date: "02-07-2024",
       meals: [
         {
           id: 232,
@@ -49,6 +49,36 @@ const mockData = {
           label: "kids lunch",
         },
         { id: 3638, name: "Going out", addInfo: "", label: "lunch" },
+      ],
+    },
+    {
+      id: "2",
+      date: "02-08-2024",
+      meals: [
+        {
+          id: 345,
+          name: "Chicken madras",
+          addInfo: "rice",
+          label: "All dinner",
+        },
+        {
+          id: 32,
+          name: "Cheese sandwich",
+          addInfo: "veg",
+          label: "kids lunch",
+        },
+      ],
+    },
+    {
+      id: "3",
+      date: "02-09-2024",
+      meals: [
+        {
+          id: 22,
+          name: "Pizza",
+          addInfo: "",
+          label: "kids lunch",
+        },
       ],
     },
   ],
