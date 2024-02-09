@@ -1,9 +1,16 @@
 import React from "react";
 
-export default function BoardNavBtn({ label, dataSet, changeViewToday }) {
+export default function BoardNavBtn({
+  label,
+  dataSet,
+  changeViewToday,
+  children,
+}) {
   function changeDayHandle(e) {
+    const btnDataset = e.target.parentNode.dataset.btn || e.target.dataset.btn;
     let numDays = 0;
-    switch (e.target.dataset.btn) {
+    console.log(btnDataset);
+    switch (btnDataset) {
       case "prev": {
         numDays = -1;
         break;
@@ -34,7 +41,7 @@ export default function BoardNavBtn({ label, dataSet, changeViewToday }) {
       data-btn={dataSet}
       onClick={changeDayHandle}
     >
-      {label}
+      {children ? children : label}
     </button>
   );
 }
