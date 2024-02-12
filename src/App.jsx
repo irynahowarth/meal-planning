@@ -2,7 +2,6 @@ import React from "react";
 import mockData from "./mockData";
 import RecipeCard from "./components/RecipeCard";
 import Board from "./components/Board";
-// import FormAddRecord from "./components/FormAddRecord";
 
 const data = mockData;
 
@@ -63,7 +62,6 @@ export default function Mealplan() {
               </ul>
             </div>
             <Board />
-            {/* <FormAddRecord /> */}
           </div>
         </div>
       </main>
