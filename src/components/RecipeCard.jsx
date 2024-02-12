@@ -20,7 +20,13 @@ export default function RecipeCard({ recipe }) {
       {isModalOpen && (
         <Modal
           isOpen={isModalOpen}
-          handleDismiss={() => toggleIsModalOpen(false)}
+          handleDismiss={toggleIsModalOpen}
+          modalData={{
+            name: recipe.name,
+            addInfo: recipe.addInfo,
+            date: "02-15-2024",
+          }}
+          modalState="addRecord"
         />
       )}
     </li>

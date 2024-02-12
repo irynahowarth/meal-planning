@@ -2,8 +2,12 @@ import React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import AddRecordModal from "./Record/AddRecordModal";
 
-export default function Modal({ isOpen }) {
-  console.log(isOpen);
+export default function Modal({
+  isOpen,
+  handleDismiss,
+  modalState,
+  modalData,
+}) {
   return (
     <Dialog.Root open={isOpen} className="fixed place-content-center">
       <Dialog.Trigger />
@@ -14,7 +18,7 @@ export default function Modal({ isOpen }) {
      translate-x-[-50%] translate-y-[-50%] z-[30] bg-white  shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px]
       focus:outline-none"
         >
-          <AddRecordModal />
+          <AddRecordModal handleDismiss={handleDismiss} modalData={modalData} />
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

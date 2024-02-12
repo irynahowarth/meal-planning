@@ -5,12 +5,16 @@ import ButtonPrimary from "../../Layout/Buttons/ButtonPrimary";
 import ButtonSecondary from "../../Layout/Buttons/ButtonSecondary";
 import FormInput from "../../Layout/FormInput";
 import FormSelect from "../../Layout/FormSelect";
+import DatePicker from "../../Layout/DatePicker";
 
 const LABELS = mockData.labels;
 
-export default function AddRecordModal() {
-  const [title, setTitle] = React.useState("");
-  const [addInfo, setAddInfo] = React.useState("");
+export default function AddRecordModal({ handleDismiss, modalData }) {
+  const [title, setTitle] = React.useState(modalData?.name || "");
+  const [addInfo, setAddInfo] = React.useState(modalData?.addInfo || "");
+  const [date, setDate] = React.useState(
+    new Date(modalData?.date).toISOString().substr(0, 10) || ""
+  );
   const [mealLabel, setMealLabel] = React.useState("");
 
   const id = React.useId();
@@ -18,6 +22,7 @@ export default function AddRecordModal() {
   function handleSubmit(event) {
     event.preventDefault();
     console.log({ title }, { addInfo });
+    handleDismiss();
   }
   return (
     <>
@@ -26,6 +31,12 @@ export default function AddRecordModal() {
       </Dialog.Title>
       <form onSubmit={handleSubmit}>
         <div className="p-6">
+          <DatePicker
+            inputId={`date-${id}`}
+            inputTitle="Date"
+            inputValue={date}
+            inputChange={(event) => setDate(event.target.value)}
+          />
           <FormInput
             inputId={`title-${id}`}
             inputTitle="Title"
@@ -52,7 +63,11 @@ export default function AddRecordModal() {
             <ButtonPrimary buttonLabel="Save" />
           </Dialog.Close>
           <Dialog.Close asChild>
-            <ButtonSecondary buttonLabel="Cancel" aria-label="Close" />
+            <ButtonSecondary
+              buttonLabel="Cancel"
+              buttonAction={handleDismiss}
+              aria-label="Close"
+            />
           </Dialog.Close>
         </div>
       </form>
