@@ -2,6 +2,7 @@ import React from "react";
 import mockData from "./mockData";
 import RecipeCard from "./components/RecipeCard";
 import Board from "./components/Board";
+import RecipeList from "./components/RecipeList";
 
 const data = mockData;
 
@@ -51,16 +52,7 @@ export default function Mealplan() {
         </div>
         <div className="main-wrapper p-[24px]">
           <div className="board-wrapper flex gap-5">
-            <div className="rec-list w-1/5 bg-white border rounded">
-              <h2 className="text-sm font-bold p-2 border-b">Recipes list</h2>
-              <ul>
-                {data.recipes
-                  .filter((recipe) => recipe.group.includes(activeGroup))
-                  .map((recipe) => (
-                    <RecipeCard recipe={recipe} key={recipe.id} />
-                  ))}
-              </ul>
-            </div>
+            <RecipeList allRecipes={data.recipes} activeGroup={activeGroup} />
             <Board />
           </div>
         </div>
