@@ -7,7 +7,7 @@ export default function RecipeList({ allRecipes, activeGroup }) {
       <h2 className="text-sm font-bold p-2 border-b">Recipes list</h2>
       <ul>
         {allRecipes
-          .filter((recipe) => recipe.group.includes(activeGroup))
+          .filter((recipe) => recipe.group.includes(+activeGroup))
           .map((recipe) => (
             <RecipeCard recipe={recipe} key={recipe.id} />
           ))}

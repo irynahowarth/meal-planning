@@ -1,13 +1,11 @@
 import React from "react";
-import mockData from "../../../mockData";
 import * as Dialog from "@radix-ui/react-dialog";
 import ButtonPrimary from "../../Layout/Buttons/ButtonPrimary";
 import ButtonSecondary from "../../Layout/Buttons/ButtonSecondary";
 import FormInput from "../../Layout/FormInput";
 import FormSelect from "../../Layout/FormSelect";
 import DatePicker from "../../Layout/DatePicker";
-
-const LABELS = mockData.labels;
+import "../../../server";
 
 export default function AddRecordModal({ handleDismiss, modalData }) {
   const [title, setTitle] = React.useState(modalData?.name || "");
@@ -16,6 +14,13 @@ export default function AddRecordModal({ handleDismiss, modalData }) {
     new Date(modalData?.date).toISOString().substr(0, 10) || ""
   );
   const [mealLabel, setMealLabel] = React.useState("");
+  const [labelList, setLabelList] = React.useState([]);
+
+  React.useEffect(() => {
+    fetch("/api/labels")
+      .then((res) => res.json())
+      .then((data) => setLabelList(data.labels));
+  }, []);
 
   const id = React.useId();
 
@@ -54,7 +59,7 @@ export default function AddRecordModal({ handleDismiss, modalData }) {
             selectCahnge={(event) => {
               setMealLabel(event.target.value);
             }}
-            selectItems={LABELS}
+            selectItems={labelList}
             selectNoSelect={{ title: "No label", value: "" }}
           />
         </div>

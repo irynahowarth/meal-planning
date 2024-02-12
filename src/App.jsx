@@ -1,13 +1,22 @@
 import React from "react";
-import mockData from "./mockData";
-import RecipeCard from "./components/RecipeCard";
 import Board from "./components/Board";
 import RecipeList from "./components/RecipeList";
-
-const data = mockData;
+import "./server";
 
 export default function Mealplan() {
   const [activeGroup, setActiveGroup] = React.useState(1);
+  const [recepieList, setRecepieList] = React.useState([]);
+  const [groupList, setGroupList] = React.useState([]);
+
+  React.useEffect(() => {
+    fetch("/api/groups")
+      .then((res) => res.json())
+      .then((data) => setGroupList(data.groups));
+    fetch("/api/recipes")
+      .then((res) => res.json())
+      .then((data) => setRecepieList(data.recipes));
+  }, []);
+
   return (
     <div className="flex">
       <div className="sidebar h-screen relative">
@@ -17,7 +26,7 @@ export default function Mealplan() {
         <div className="groups-wrapper border border-gray-200 p-5 border-t-0 border-b-0 h-5/6">
           <h2>Groups</h2>
           <ul>
-            {data.groups.map(({ id, title }) => (
+            {groupList.map(({ id, title }) => (
               <li
                 key={id}
                 onClick={() => setActiveGroup(id)}
@@ -52,7 +61,7 @@ export default function Mealplan() {
         </div>
         <div className="main-wrapper p-[24px]">
           <div className="board-wrapper flex gap-5">
-            <RecipeList allRecipes={data.recipes} activeGroup={activeGroup} />
+            <RecipeList allRecipes={recepieList} activeGroup={activeGroup} />
             <Board />
           </div>
         </div>
