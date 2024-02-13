@@ -5,6 +5,7 @@ import ButtonSecondary from "../../Layout/Buttons/ButtonSecondary";
 import FormInput from "../../Layout/FormInput";
 import FormSelect from "../../Layout/FormSelect";
 import DatePicker from "../../Layout/DatePicker";
+import { BoardDataContext } from "../../Board/BoardDataProvider";
 import "../../../server";
 
 export default function AddRecordModal({ handleDismiss, modalData }) {
@@ -15,6 +16,8 @@ export default function AddRecordModal({ handleDismiss, modalData }) {
   );
   const [mealLabel, setMealLabel] = React.useState("");
   const [labelList, setLabelList] = React.useState([]);
+
+  const { records } = React.useContext(BoardDataContext);
 
   React.useEffect(() => {
     fetch("/api/labels")
@@ -29,6 +32,7 @@ export default function AddRecordModal({ handleDismiss, modalData }) {
     console.log({ title }, { addInfo });
     handleDismiss();
   }
+
   return (
     <>
       <Dialog.Title className=" bg-gray-50 font-semibold text-md text-800 p-4 border-b">

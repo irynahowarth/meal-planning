@@ -1,23 +1,19 @@
 import React from "react";
 import BoardHeader from "./BoardHeader";
 import BoardColumn from "./BoardColumn";
+import { BoardDataContext } from "../Board/BoardDataProvider";
 
 const todayDate = new Date(Date.now());
 
 export default function Board() {
   const [viewWeek, setViewWeek] = React.useState([]);
   const [viewToday, setViewToday] = React.useState(todayDate);
-  const [boardRecords, setBoardRecords] = React.useState([]);
+
+  const { records } = React.useContext(BoardDataContext);
 
   React.useEffect(() => {
     setViewWeek(getCurrentWeek(viewToday));
   }, [viewToday]);
-
-  React.useEffect(() => {
-    fetch("/api/dateRecords")
-      .then((res) => res.json())
-      .then((data) => setBoardRecords(data.dateRecords));
-  }, []);
 
   function getCurrentWeek(today) {
     const currentWeek = [];
@@ -52,6 +48,8 @@ export default function Board() {
     return year && month && day;
   }
 
+  console.log(records);
+
   return (
     <div className="board-main w-4/5 bg-white border rounded">
       <BoardHeader changeViewToday={changeViewToday} viewWeek={viewWeek} />
@@ -69,7 +67,7 @@ export default function Board() {
       </div>
       <div className="grid  grid-cols-7	gap-px h-full bg-gray-200">
         {viewWeek.map((viewDay) => {
-          const dayRecords = boardRecords?.find((rec) => {
+          const dayRecords = records?.find((rec) => {
             return dateCompare(viewDay, new Date(rec.date));
           });
           return (
