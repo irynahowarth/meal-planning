@@ -48,12 +48,9 @@ export default function Board() {
     return year && month && day;
   }
 
-  console.log(records);
-
   return (
     <div className="board-main w-4/5 bg-white border rounded">
       <BoardHeader changeViewToday={changeViewToday} viewWeek={viewWeek} />
-
       <div>
         <div className="grid  grid-cols-7	 leading-6 gap-px text-center border-b text-xs  font-medium text-gray-500 bg-gray-200">
           {viewWeek.map((date, index) => {

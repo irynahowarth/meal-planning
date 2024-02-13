@@ -7,6 +7,7 @@ import FormSelect from "../../Layout/FormSelect";
 import DatePicker from "../../Layout/DatePicker";
 import { BoardDataContext } from "../../Board/BoardDataProvider";
 import "../../../server";
+import { produce } from "immer";
 
 export default function AddRecordModal({ handleDismiss, modalData }) {
   const [title, setTitle] = React.useState(modalData?.name || "");
@@ -17,7 +18,7 @@ export default function AddRecordModal({ handleDismiss, modalData }) {
   const [mealLabel, setMealLabel] = React.useState("");
   const [labelList, setLabelList] = React.useState([]);
 
-  const { records } = React.useContext(BoardDataContext);
+  const { records, setRecords } = React.useContext(BoardDataContext);
 
   React.useEffect(() => {
     fetch("/api/labels")
@@ -29,7 +30,27 @@ export default function AddRecordModal({ handleDismiss, modalData }) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log({ title }, { addInfo });
+    const meal = {
+      id: Math.floor(Math.random() * 1000),
+      name: title,
+      addInfo: addInfo,
+      label: mealLabel,
+    };
+    const nextRecordsState = produce(records, (draftState) => {
+      const findDate = draftState.find((record) => record.date === date);
+      if (findDate) {
+        findDate.meals.push(meal);
+      } else {
+        draftState.push({
+          id: crypto.randomUUID(),
+          date: date,
+          meals: [meal],
+        });
+      }
+      return draftState;
+    });
+    setRecords(nextRecordsState);
+
     handleDismiss();
   }
 
