@@ -1,10 +1,10 @@
 import React from "react";
 import BoardTitle from "./BoardTitle";
 import BoardNavBtn from "./BoardNavBtn";
-import NextIcon from "./icons/NextIcon";
-import NextFastIcon from "./icons/NextFastIcon";
-import PrevIcon from "./icons/PrevIcon";
-import PrevFastIcon from "./icons/PrevFastIcon";
+import NextIcon from "../icons/NextIcon";
+import NextFastIcon from "../icons/NextFastIcon";
+import PrevIcon from "../icons/PrevIcon";
+import PrevFastIcon from "../icons/PrevFastIcon";
 
 export default function BoardHeader({ changeViewToday, viewWeek }) {
   return (

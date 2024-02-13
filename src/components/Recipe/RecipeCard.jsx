@@ -1,6 +1,6 @@
 import React from "react";
-import Modal from "./Modal/Modal";
-import useToggle from "./helpers/use-toggle";
+import Modal from "../Modal/Modal";
+import useToggle from "../helpers/use-toggle";
 
 export default function RecipeCard({ recipe }) {
   const [isModalOpen, toggleIsModalOpen] = useToggle(false);
