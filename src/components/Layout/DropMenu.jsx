@@ -1,12 +1,19 @@
 import React from "react";
 import * as Select from "@radix-ui/react-select";
 import DropDotsIcon from "../icons/DropDotsIcon";
+import { ModalDataContext } from "../Modal/ModalDataProvider";
 
 export default function DropMenu() {
   const [value, setValue] = React.useState(null);
+  const { modalView, setModalView, modalData } =
+    React.useContext(ModalDataContext);
 
-  if (value === "edit") console.log("edit");
-  if (value === "delete") console.log("delete");
+  React.useEffect(() => {
+    if (value === "edit") console.log("edit");
+    if (value === "delete") {
+      setModalView("deleteRecord");
+    }
+  }, [value]);
 
   return (
     <Select.Root value={value} onValueChange={setValue}>
