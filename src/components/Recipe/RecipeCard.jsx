@@ -1,12 +1,41 @@
 import React from "react";
 import Modal from "../Modal/Modal";
 import { ModalDataContext } from "../Modal/ModalDataProvider";
-import useToggle from "../helpers/use-toggle";
 
 export default function RecipeCard({ recipe }) {
-  const [isModalOpen, toggleIsModalOpen] = useToggle(false);
-  const { isOpen, toggleIsOpen, modalView, setModalView } =
-    React.useContext(ModalDataContext);
+  const {
+    isOpen,
+    toggleIsOpen,
+    modalView,
+    setModalView,
+    modalData,
+    setModalData,
+  } = React.useContext(ModalDataContext);
+
+  function modalSkeleton() {
+    if (modalView !== "addRecord") return;
+    if (!isOpen) return;
+    if (modalData.id !== recipe.id) return;
+    return (
+      <Modal
+        isOpen={isOpen}
+        handleDismiss={toggleIsOpen}
+        modalData={modalData}
+        modalView={modalView}
+      />
+    );
+  }
+
+  function openModalAddRecord() {
+    setModalView("addRecord");
+    setModalData({
+      id: recipe.id,
+      name: recipe.name,
+      addInfo: recipe.addInfo,
+      date: new Date(Date.now()).toISOString().slice(0, 10),
+    });
+    toggleIsOpen();
+  }
 
   return (
     <li className="border-b p-2 flex items-center">
@@ -16,25 +45,11 @@ export default function RecipeCard({ recipe }) {
       </div>
       <button
         className="ml-auto px-2 py-0.5  rounded-full border h-full"
-        onClick={() => {
-          toggleIsOpen();
-          setModalView("addRecord");
-        }}
+        onClick={openModalAddRecord}
       >
         +
       </button>
-      {isOpen && (
-        <Modal
-          isOpen={isOpen}
-          handleDismiss={toggleIsOpen}
-          modalData={{
-            name: recipe.name,
-            addInfo: recipe.addInfo,
-            date: "02-15-2024",
-          }}
-          modalView={modalView}
-        />
-      )}
+      {modalSkeleton()}
     </li>
   );
 }
