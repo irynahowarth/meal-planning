@@ -6,23 +6,19 @@ import FormInput from "../../Layout/FormInput";
 import FormSelect from "../../Layout/FormSelect";
 import DatePicker from "../../Layout/DatePicker";
 import { BoardDataContext } from "../../Board/BoardDataProvider";
+import { ModalDataContext } from "../ModalDataProvider";
 import "../../../server";
 import { produce } from "immer";
 
-export default function AddRecordModal({ handleDismiss, modalData }) {
+export default function AddRecordModal({ handleDismiss }) {
+  const { records, setRecords, labels } = React.useContext(BoardDataContext);
+  const { modalData, setModalData, setModalView } =
+    React.useContext(ModalDataContext);
+
   const [title, setTitle] = React.useState(modalData?.name || "");
   const [addInfo, setAddInfo] = React.useState(modalData?.addInfo || "");
   const [date, setDate] = React.useState(modalData?.date || "");
   const [mealLabel, setMealLabel] = React.useState("");
-  const [labelList, setLabelList] = React.useState([]);
-
-  const { records, setRecords } = React.useContext(BoardDataContext);
-
-  React.useEffect(() => {
-    fetch("/api/labels")
-      .then((res) => res.json())
-      .then((data) => setLabelList(data.labels));
-  }, []);
 
   const id = React.useId();
 
@@ -38,7 +34,6 @@ export default function AddRecordModal({ handleDismiss, modalData }) {
       addInfo: addInfo,
       label: mealLabel,
     };
-    //
 
     const nextRecordsState = produce(records, (draftState) => {
       const findDate = draftState.find(
@@ -56,6 +51,8 @@ export default function AddRecordModal({ handleDismiss, modalData }) {
       return draftState;
     });
     setRecords(nextRecordsState);
+    setModalData(null);
+    setModalView("viewRecipe");
 
     handleDismiss();
   }
@@ -90,7 +87,7 @@ export default function AddRecordModal({ handleDismiss, modalData }) {
             selectCahnge={(event) => {
               setMealLabel(event.target.value);
             }}
-            selectItems={labelList}
+            selectItems={labels}
             selectNoSelect={{ title: "No label", value: "" }}
           />
         </div>
