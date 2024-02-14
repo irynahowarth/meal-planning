@@ -1,22 +1,17 @@
 import React from "react";
+import BoardRecord from "./BoardRecord";
 
 export default function BoardColumn({ viewDay, dayRecords }) {
   const mealList =
     dayRecords !== undefined
       ? dayRecords?.meals.map((meal, index) => (
-          <li className="border-b p-2 flex flex-col" key={index}>
-            <div>{meal.name}</div>
-            {meal.addInfo && <span>{meal.addInfo}</span>}
-            {meal.label && (
-              <span className="text-sm text-blue-700">{meal.label}</span>
-            )}
-          </li>
+          <BoardRecord key={index} meal={meal} />
         ))
       : null;
 
   return (
     <div className="py-2 bg-white">
-      <ul>{mealList}</ul>
+      <div>{mealList}</div>
     </div>
   );
 }
