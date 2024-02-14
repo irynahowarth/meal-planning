@@ -12,9 +12,7 @@ import { produce } from "immer";
 export default function AddRecordModal({ handleDismiss, modalData }) {
   const [title, setTitle] = React.useState(modalData?.name || "");
   const [addInfo, setAddInfo] = React.useState(modalData?.addInfo || "");
-  const [date, setDate] = React.useState(
-    new Date(modalData?.date).toISOString().substr(0, 10) || ""
-  );
+  const [date, setDate] = React.useState(modalData?.date || "");
   const [mealLabel, setMealLabel] = React.useState("");
   const [labelList, setLabelList] = React.useState([]);
 
@@ -28,6 +26,10 @@ export default function AddRecordModal({ handleDismiss, modalData }) {
 
   const id = React.useId();
 
+  function dateFormat(d) {
+    return new Date(d).toISOString().substr(0, 10);
+  }
+
   function handleSubmit(event) {
     event.preventDefault();
     const meal = {
@@ -36,8 +38,12 @@ export default function AddRecordModal({ handleDismiss, modalData }) {
       addInfo: addInfo,
       label: mealLabel,
     };
+    //
+
     const nextRecordsState = produce(records, (draftState) => {
-      const findDate = draftState.find((record) => record.date === date);
+      const findDate = draftState.find(
+        (record) => dateFormat(Date.parse(record.date)) === dateFormat(date)
+      );
       if (findDate) {
         findDate.meals.push(meal);
       } else {
@@ -64,7 +70,7 @@ export default function AddRecordModal({ handleDismiss, modalData }) {
           <DatePicker
             inputId={`date-${id}`}
             inputTitle="Date"
-            inputValue={date}
+            inputValue={dateFormat(date)}
             inputChange={(event) => setDate(event.target.value)}
           />
           <FormInput
