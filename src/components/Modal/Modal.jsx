@@ -20,7 +20,12 @@ export default function Modal({ isOpen, handleDismiss, modalView, modalData }) {
               modalData={modalData}
             />
           )}
-          {modalView === "viewRecord" && <ViewRecordModal />}
+          {modalView === "viewRecord" && (
+            <ViewRecordModal
+              handleDismiss={handleDismiss}
+              modalData={modalData}
+            />
+          )}
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
