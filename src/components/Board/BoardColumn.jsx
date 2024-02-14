@@ -5,7 +5,7 @@ export default function BoardColumn({ viewDay, dayRecords }) {
   const mealList =
     dayRecords !== undefined
       ? dayRecords?.meals.map((meal, index) => (
-          <BoardRecord key={index} meal={meal} />
+          <BoardRecord key={index} meal={meal} viewDay={viewDay} />
         ))
       : null;
 
