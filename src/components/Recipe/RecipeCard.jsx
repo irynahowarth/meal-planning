@@ -3,28 +3,8 @@ import Modal from "../Modal/Modal";
 import { ModalDataContext } from "../Modal/ModalDataProvider";
 
 export default function RecipeCard({ recipe }) {
-  const {
-    isOpen,
-    toggleIsOpen,
-    modalView,
-    setModalView,
-    modalData,
-    setModalData,
-  } = React.useContext(ModalDataContext);
-
-  function modalSkeleton() {
-    if (modalView !== "addRecord") return;
-    if (!isOpen) return;
-    if (modalData.id !== recipe.id) return;
-    return (
-      <Modal
-        isOpen={isOpen}
-        handleDismiss={toggleIsOpen}
-        modalData={modalData}
-        modalView={modalView}
-      />
-    );
-  }
+  const { toggleIsOpen, setModalView, setModalData } =
+    React.useContext(ModalDataContext);
 
   function openModalAddRecord() {
     setModalView("addRecord");
@@ -49,7 +29,6 @@ export default function RecipeCard({ recipe }) {
       >
         +
       </button>
-      {modalSkeleton()}
     </li>
   );
 }

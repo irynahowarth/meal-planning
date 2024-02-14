@@ -10,9 +10,9 @@ import { ModalDataContext } from "../ModalDataProvider";
 import "../../../server";
 import { produce } from "immer";
 
-export default function AddRecordModal({ handleDismiss }) {
+export default function AddRecordModal() {
   const { records, setRecords, labels } = React.useContext(BoardDataContext);
-  const { modalData, setModalData, setModalView } =
+  const { modalData, toggleIsOpen, setModalData, setModalView } =
     React.useContext(ModalDataContext);
 
   const [title, setTitle] = React.useState(modalData?.name || "");
@@ -54,7 +54,7 @@ export default function AddRecordModal({ handleDismiss }) {
     setModalData(null);
     setModalView("viewRecipe");
 
-    handleDismiss();
+    toggleIsOpen();
   }
 
   return (
@@ -98,7 +98,7 @@ export default function AddRecordModal({ handleDismiss }) {
           <Dialog.Close asChild>
             <ButtonSecondary
               buttonLabel="Cancel"
-              buttonAction={handleDismiss}
+              buttonAction={toggleIsOpen}
               aria-label="Close"
             />
           </Dialog.Close>

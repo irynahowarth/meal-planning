@@ -1,7 +1,9 @@
 import React from "react";
 import DropMenu from "../../Layout/DropMenu";
+import { ModalDataContext } from "../ModalDataProvider/";
 
-export default function ViewRecordModal({ modalData }) {
+export default function ViewRecordModal() {
+  const { modalData } = React.useContext(ModalDataContext);
   return (
     <>
       <div className="flex justify-between  bg-gray-50 font-semibold text-md text-800 p-4 border-b overflow-visible">
