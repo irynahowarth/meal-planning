@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { produce } from "immer";
 import useSWR from "swr";
 
 export const BoardDataContext = React.createContext();
@@ -36,11 +37,40 @@ export default function BoardDataProvider({ children }) {
   if (error) return <div>failed to load</div>;
   if (isLoading) return <div>loading...</div>;
 
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  async function addRecords(meal) {
+    const nextRecordsState = produce(records, (draftState) => {
+      const findDate = draftState.find(
+        (record) =>
+          dateFormat(Date.parse(record.date)) === dateFormat(meal.date)
+      );
+      if (findDate) {
+        findDate.meals.push(meal);
+      } else {
+        draftState.push({
+          id: crypto.randomUUID(),
+          date: meal.date,
+          meals: [meal],
+        });
+      }
+      return draftState;
+    });
+
+    await sleep(1000);
+
+    setRecords(nextRecordsState);
+  }
+
   return (
     <BoardDataContext.Provider
-      value={{ records, setRecords, labels, setLabels }}
+      value={{ records, setRecords, labels, setLabels, addRecords }}
     >
       {children}
     </BoardDataContext.Provider>
   );
+}
+
+function dateFormat(d) {
+  return new Date(d).toISOString().substr(0, 10);
 }

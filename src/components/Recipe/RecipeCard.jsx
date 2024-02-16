@@ -4,10 +4,13 @@ import ModalAlt from "../Modal/ModalAlt";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Pencil1Icon, Cross1Icon } from "@radix-ui/react-icons";
 import { ModalDataContext } from "../Modal/ModalDataProvider";
+import { BoardDataContext } from "../Board/BoardDataProvider";
 
 export default function RecipeCard({ recipe }) {
-  const { toggleIsOpen, setModalView, setModalData } =
+  const { toggleIsOpen, setModalView, setModalData, modalData } =
     React.useContext(ModalDataContext);
+
+  const [open, setOpen] = React.useState(false);
 
   function openModalAddRecord() {
     setModalView("addRecord");
@@ -33,7 +36,7 @@ export default function RecipeCard({ recipe }) {
         +
       </button>
       <div>
-        <Dialog.Root>
+        <Dialog.Root open={open} onOpenChange={setOpen}>
           <Dialog.Trigger>
             <Pencil1Icon />
           </Dialog.Trigger>
@@ -46,11 +49,110 @@ export default function RecipeCard({ recipe }) {
                     <Cross1Icon />
                   </Dialog.Close>
                 </div>
+                <RecipeForm recipe={recipe} afterSave={() => setOpen(false)} />
               </Dialog.Content>
             </Dialog.Overlay>
           </Dialog.Portal>
         </Dialog.Root>
       </div>
     </li>
+  );
+}
+
+function RecipeForm({ recipe, afterSave }) {
+  const { addRecords, labels } = React.useContext(BoardDataContext);
+  async function handleSubmit(event) {
+    event.preventDefault();
+    const data = Object.fromEntries(new FormData(event.currentTarget));
+    await addRecords(data);
+    afterSave();
+  }
+  return (
+    <form action="" onSubmit={handleSubmit}>
+      <fieldset>
+        <div className="mt-8 ">
+          <div className="space-y-6">
+            <div>
+              <label
+                htmlFor="data"
+                className="text-sm font-medium text-gray-900"
+              >
+                Date
+              </label>
+              <input
+                autoFocus
+                className="mt-2 block w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 shadow-sm sm:leading-6"
+                type="date"
+                defaultValue={new Date(Date.now()).toISOString().slice(0, 10)}
+                name="date"
+                id="data"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="name"
+                className="text-sm font-medium text-gray-900"
+              >
+                Name
+              </label>
+              <input
+                autoFocus
+                className="mt-2 block w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 shadow-sm sm:leading-6"
+                type="text"
+                defaultValue={recipe.name}
+                name="name"
+                id="name"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="addInfo"
+                className="text-sm font-medium leading-6 text-gray-900"
+              >
+                Additional Info
+              </label>
+              <input
+                className="mt-2 block w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 shadow-sm sm:leading-6"
+                type="text"
+                defaultValue={recipe.addInfo}
+                name="addInfo"
+                id="addInfo"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="label"
+                className="text-sm font-medium leading-6 text-gray-900"
+              >
+                Label
+              </label>
+              <select
+                name="label"
+                id="label"
+                className="mt-2 block w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 shadow-sm sm:leading-6"
+              >
+                <option key={0} value="">
+                  No label
+                </option>
+                {labels.map((item) => (
+                  <option key={item.id} value={item.title}>
+                    {item.title}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div className="text-right mt-8 space-x-6">
+          <Dialog.Close className="px-4 py-2  text-sm font-medium text-gray-500 rounded hover:text-gray-600">
+            Cancel
+          </Dialog.Close>
+          <button className="inline-flex justify-center items-center px-4 py-2 bg-blue-500 text-sm font-medium text-white rounded hover:bg-blue-600 ">
+            <span>Save</span>
+          </button>
+        </div>
+      </fieldset>
+    </form>
   );
 }
