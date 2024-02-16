@@ -1,10 +1,14 @@
 import React from "react";
 import { ModalDataContext } from "../Modal/ModalDataProvider";
 import Modal from "../Modal/Modal";
+import ModalAlt from "../Modal/ModalAlt";
+import ViewRecordForm from "../Modal/Record/ViewRecordForm";
 
 export default function BoardRecord({ meal, viewDay }) {
-  const { toggleIsOpen, setModalData, setModalView } =
+  const { setIsOpen, setModalData, setModalView } =
     React.useContext(ModalDataContext);
+
+  const [open, setOpen] = React.useState(false);
 
   function openModalViewRecord() {
     setModalView("viewRecord");
@@ -15,10 +19,36 @@ export default function BoardRecord({ meal, viewDay }) {
       label: meal?.label,
       date: new Date(viewDay).toISOString().slice(0, 10),
     });
-    toggleIsOpen();
+    setIsOpen(true);
   }
   return (
-    <div
+    <>
+      <ModalAlt open={open} onOpenChange={setOpen}>
+        <ModalAlt.Button className="rounded p-2 hover:bg-gray-200">
+          <div className="text-left border-b p-2 flex flex-col cursor-pointer">
+            <div>{meal.name}</div>
+            {meal.addInfo && <span>{meal.addInfo}</span>}
+            {meal.label && (
+              <span className="text-sm text-blue-700">{meal.label}</span>
+            )}
+          </div>
+        </ModalAlt.Button>
+        <ModalAlt.Content title="View Meal Record">
+          <ViewRecordForm
+            recipe={{
+              ...meal,
+              date: new Date(viewDay).toISOString().slice(0, 10),
+            }}
+            afterSave={() => setOpen(false)}
+          />
+        </ModalAlt.Content>
+      </ModalAlt>
+    </>
+  );
+}
+
+{
+  /* <div
       className="border-b p-2 flex flex-col cursor-pointer"
       onClick={openModalViewRecord}
     >
@@ -27,6 +57,5 @@ export default function BoardRecord({ meal, viewDay }) {
       {meal.label && (
         <span className="text-sm text-blue-700">{meal.label}</span>
       )}
-    </div>
-  );
+    </div> */
 }
