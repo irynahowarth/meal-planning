@@ -5,6 +5,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { Pencil1Icon, Cross1Icon } from "@radix-ui/react-icons";
 import { ModalDataContext } from "../Modal/ModalDataProvider";
 import { BoardDataContext } from "../Board/BoardDataProvider";
+import Spinner from "../Layout/Spinner";
 
 export default function RecipeCard({ recipe }) {
   const { toggleIsOpen, setModalView, setModalData, modalData } =
@@ -41,8 +42,8 @@ export default function RecipeCard({ recipe }) {
             <Pencil1Icon />
           </Dialog.Trigger>
           <Dialog.Portal>
-            <Dialog.Overlay className="fixed inset-0 bg-black/50">
-              <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white text-gray-900 rounded-md p-8 shadow w-full max-w-md">
+            <Dialog.Overlay className="data-[state=open]:animate-[dialog-overlay-show_200ms] data-[state=closed]:animate-[dialog-overlay-show_200ms] fixed inset-0 bg-black/50">
+              <Dialog.Content className="data-[state=open]:animate-[dialog-content-show_200ms] data-[state=closed]:animate-[dialog-content-hide_200ms] fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white text-gray-900 rounded-md p-8 shadow w-full max-w-md">
                 <div className="flex justify-between items-center">
                   <Dialog.Title className="text-xl">Add record</Dialog.Title>
                   <Dialog.Close className="text-gray-400 hover:text-gray-500">
@@ -61,16 +62,18 @@ export default function RecipeCard({ recipe }) {
 
 function RecipeForm({ recipe, afterSave }) {
   const { addRecords, labels } = React.useContext(BoardDataContext);
+  const [saving, setSaving] = React.useState(false);
   async function handleSubmit(event) {
     event.preventDefault();
+    setSaving(true);
     const data = Object.fromEntries(new FormData(event.currentTarget));
-    await addRecords(data);
+    await addRecords({ ...data, id: Math.floor(Math.random() * 10000) });
     afterSave();
   }
   return (
     <form action="" onSubmit={handleSubmit}>
-      <fieldset>
-        <div className="mt-8 ">
+      <fieldset disabled={saving} className="group">
+        <div className="mt-8 group-disabled:opacity-50">
           <div className="space-y-6">
             <div>
               <label
@@ -148,8 +151,9 @@ function RecipeForm({ recipe, afterSave }) {
           <Dialog.Close className="px-4 py-2  text-sm font-medium text-gray-500 rounded hover:text-gray-600">
             Cancel
           </Dialog.Close>
-          <button className="inline-flex justify-center items-center px-4 py-2 bg-blue-500 text-sm font-medium text-white rounded hover:bg-blue-600 ">
-            <span>Save</span>
+          <button className="inline-flex justify-center items-center px-4 py-2 bg-blue-500 text-sm font-medium text-white rounded hover:bg-blue-600 group-disabled:pointer-events-none">
+            <Spinner className="h-4 absolute group-enabled:opacity-0" />
+            <span className="group-disabled:opacity-0">Save</span>
           </button>
         </div>
       </fieldset>
