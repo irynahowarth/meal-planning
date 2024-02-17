@@ -82,19 +82,16 @@ export default function BoardDataProvider({ children }) {
   }
 
   async function editRecords({ meal, oldDate }) {
-    const compareDate =
-      Date.parse(meal.date) === Date.parse(oldDate) ? meal.date : oldDate;
+    const isDateNew = Date.parse(meal.date) === Date.parse(oldDate);
+    const compareDate = isDateNew ? meal.date : oldDate;
 
-    //date didn't change
-    // const nextRecordsState = updateRecord(meal, compareDate);
-    console.log(meal);
-    deleteRecord(meal);
-
-    // const nextRecordsState = ;
+    const nextRecordsState = !isDateNew
+      ? moveRecord({ ...meal, id: parseInt(meal.id) }, compareDate)
+      : updateRecord(meal, oldDate);
 
     await sleep(1000);
 
-    // setRecords(nextRecordsState);
+    setRecords(nextRecordsState);
   }
 
   //update record if the date is not changed
@@ -111,6 +108,35 @@ export default function BoardDataProvider({ children }) {
       findMealRecord.name = meal.name;
       findMealRecord.addInfo = meal.addInfo;
       findMealRecord.label = meal.label;
+
+      return draftState;
+    });
+  }
+
+  function moveRecord(mealRecord, theDate) {
+    return produce(records, (draftState) => {
+      //remove record from the board with old date
+      const findDate = draftState.find(
+        (record) => dateFormat(Date.parse(record.date)) === dateFormat(theDate)
+      );
+      if (findDate) {
+        findDate.meals = findDate.meals.filter((el) => el.id !== mealRecord.id);
+      }
+      //add updated record with new date to the board
+      const findNewDate = draftState.find(
+        (record) =>
+          dateFormat(Date.parse(record.date)) === dateFormat(mealRecord.date)
+      );
+
+      if (findNewDate) {
+        findNewDate.meals.push({ id: parseInt(mealRecord.id), ...mealRecord });
+      } else {
+        draftState.push({
+          id: parseInt(mealRecord.id),
+          date: mealRecord.date,
+          meals: [mealRecord],
+        });
+      }
 
       return draftState;
     });
