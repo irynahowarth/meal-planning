@@ -30,3 +30,4 @@ function ModalContent({ title, children }) {
 ModalAlt.Button = Dialog.Trigger;
 ModalAlt.Close = Dialog.Close;
 ModalAlt.Content = ModalContent;
+ModalAlt.Title = Dialog.Title;

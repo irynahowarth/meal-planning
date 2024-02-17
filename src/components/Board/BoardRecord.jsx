@@ -2,6 +2,7 @@ import React from "react";
 import { ModalDataContext } from "../Modal/ModalDataProvider";
 import Modal from "../Modal/Modal";
 import ModalAlt from "../Modal/ModalAlt";
+import ModalRecord from "../Modal/Record/ModalRecordContent";
 import ViewRecordForm from "../Modal/Record/ViewRecordForm";
 
 export default function BoardRecord({ meal, viewDay }) {
@@ -34,7 +35,7 @@ export default function BoardRecord({ meal, viewDay }) {
           </div>
         </ModalAlt.Button>
         <ModalAlt.Content title="View Meal Record">
-          <ViewRecordForm
+          <ModalRecord
             recipe={{
               ...meal,
               date: new Date(viewDay).toISOString().slice(0, 10),
@@ -45,17 +46,4 @@ export default function BoardRecord({ meal, viewDay }) {
       </ModalAlt>
     </>
   );
-}
-
-{
-  /* <div
-      className="border-b p-2 flex flex-col cursor-pointer"
-      onClick={openModalViewRecord}
-    >
-      <div>{meal.name}</div>
-      {meal.addInfo && <span>{meal.addInfo}</span>}
-      {meal.label && (
-        <span className="text-sm text-blue-700">{meal.label}</span>
-      )}
-    </div> */
 }

@@ -1,13 +1,16 @@
 import React from "react";
 import ModalAlt from "../ModalAlt";
+import { ModalDataContext } from "../ModalDataProvider";
 import { Pencil1Icon, TrashIcon } from "@radix-ui/react-icons";
 
-export default function ViewRecordForm({ recipe, afterSave }) {
+export default function ViewRecordForm({ recipe, afterSave, setModalState }) {
+  const { setIsOpen, setModalData, setModalView } =
+    React.useContext(ModalDataContext);
   function editBtnHandler() {
-    console.log("edit");
+    setModalState("edit");
   }
   function deleteBtnHandler() {
-    console.log("delete");
+    setModalState("delete");
   }
   return (
     <>
