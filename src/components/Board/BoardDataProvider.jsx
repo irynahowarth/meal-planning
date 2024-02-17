@@ -53,8 +53,8 @@ export default function BoardDataProvider({ children }) {
     setRecords(nextRecordsState);
   }
 
-  async function addRecords(meal, mealId) {
-    const nextRecordsState = produce(records, (draftState) => {
+  function addSingleRecord(meal, mealId) {
+    return produce(records, (draftState) => {
       const findDate = draftState.find(
         (record) =>
           dateFormat(Date.parse(record.date)) === dateFormat(meal.date)
@@ -71,41 +71,38 @@ export default function BoardDataProvider({ children }) {
       }
       return draftState;
     });
+  }
+
+  async function addRecords(meal, mealId) {
+    const nextRecordsState = addSingleRecord(meal, mealId);
 
     await sleep(1000);
 
     setRecords(nextRecordsState);
   }
+
   async function editRecords({ meal, oldDate }) {
     const compareDate =
       Date.parse(meal.date) === Date.parse(oldDate) ? meal.date : oldDate;
 
-    const nextRecordsState = produce(records, (draftState) => {
-      const findDate = draftState.find(
-        (record) =>
-          dateFormat(Date.parse(record.date)) === dateFormat(compareDate)
-      );
+    //date didn't change
+    // const nextRecordsState = updateRecord(meal, compareDate);
+    console.log(meal);
+    deleteRecord(meal);
 
-      const findMealRecord = findDate.meals.find(
-        (el) => el.id == parseInt(meal.id)
-      );
-      findMealRecord.name = meal.name;
-      findMealRecord.addInfo = meal.addInfo;
-      findMealRecord.label = meal.label;
-
-      return draftState;
-    });
+    // const nextRecordsState = ;
 
     await sleep(1000);
 
-    setRecords(nextRecordsState);
+    // setRecords(nextRecordsState);
   }
 
-  function updateRecord(meal, compareDate) {
+  //update record if the date is not changed
+  function updateRecord(meal, theDate) {
     return produce(records, (draftState) => {
+      console.log(current(draftState));
       const findDate = draftState.find(
-        (record) =>
-          dateFormat(Date.parse(record.date)) === dateFormat(compareDate)
+        (record) => dateFormat(Date.parse(record.date)) === dateFormat(theDate)
       );
 
       const findMealRecord = findDate.meals.find(
@@ -118,7 +115,6 @@ export default function BoardDataProvider({ children }) {
       return draftState;
     });
   }
-  //update record if the date is not changed
 
   return (
     <BoardDataContext.Provider
@@ -129,6 +125,7 @@ export default function BoardDataProvider({ children }) {
         setLabels,
         addRecords,
         editRecords,
+        deleteRecord,
       }}
     >
       {children}

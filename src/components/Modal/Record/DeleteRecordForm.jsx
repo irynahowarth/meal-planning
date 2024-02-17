@@ -7,20 +7,11 @@ export default function DeleteRecordForm({
   handlerCancel,
   afterDelete,
 }) {
-  const { records, setRecords } = React.useContext(BoardDataContext);
+  const { records, setRecords, deleteRecord } =
+    React.useContext(BoardDataContext);
 
   function handlerDelete() {
-    const nextRecordsState = produce(records, (draftState) => {
-      const findDate = draftState.find(
-        (record) =>
-          dateFormat(Date.parse(record.date)) === dateFormat(recipe.date)
-      );
-      if (findDate) {
-        findDate.meals = findDate.meals.filter((meal) => meal.id !== recipe.id);
-      }
-      return draftState;
-    });
-    setRecords(nextRecordsState);
+    deleteRecord(recipe);
     afterDelete();
   }
 
