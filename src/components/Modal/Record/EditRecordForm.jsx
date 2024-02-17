@@ -3,16 +3,17 @@ import { BoardDataContext } from "../../Board/BoardDataProvider";
 import Spinner from "../../Layout/Spinner";
 import ModalAlt from "../ModalAlt";
 
-export default function AddRecordForm({ recipe, afterSave }) {
-  const { addRecords, labels } = React.useContext(BoardDataContext);
+export default function EditRecordForm({ recipe, afterSave }) {
+  const { editRecords, labels, records } = React.useContext(BoardDataContext);
   const [saving, setSaving] = React.useState(false);
 
   async function handleSubmit(event) {
     event.preventDefault();
     setSaving(true);
     const data = Object.fromEntries(new FormData(event.currentTarget));
-    const mealId = Math.floor(Math.random() * 10000);
-    await addRecords(data, mealId);
+    await editRecords({ meal: data, oldDate: recipe.date });
+    // console.log(recipe.date);
+    // console.log(data.date);
     afterSave();
   }
   return (
@@ -21,6 +22,7 @@ export default function AddRecordForm({ recipe, afterSave }) {
         <div className="mt-8 group-disabled:opacity-50">
           <div className="space-y-6">
             <div>
+              <input type="hidden" name="id" defaultValue={recipe.id} />
               <label
                 htmlFor="data"
                 className="text-sm font-medium text-gray-900"
@@ -31,7 +33,7 @@ export default function AddRecordForm({ recipe, afterSave }) {
                 autoFocus
                 className="mt-2 block w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 shadow-sm sm:leading-6"
                 type="date"
-                defaultValue={new Date(Date.now()).toISOString().slice(0, 10)}
+                defaultValue={new Date(recipe.date).toISOString().slice(0, 10)}
                 name="date"
                 id="data"
               />
@@ -44,7 +46,6 @@ export default function AddRecordForm({ recipe, afterSave }) {
                 Name
               </label>
               <input
-                autoFocus
                 className="mt-2 block w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 shadow-sm sm:leading-6"
                 type="text"
                 defaultValue={recipe.name}
@@ -78,6 +79,7 @@ export default function AddRecordForm({ recipe, afterSave }) {
                 name="label"
                 id="label"
                 className="mt-2 block w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 shadow-sm sm:leading-6"
+                defaultValue={recipe.label}
               >
                 <option key={0} value="">
                   No label

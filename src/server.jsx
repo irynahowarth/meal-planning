@@ -48,23 +48,24 @@ createServer({
     server.create("label", { id: 3, title: "Dinner" });
     server.create("label", { id: 4, title: "Kids lunch" });
     server.create("label", { id: 5, title: "Kids Dinner" });
+    server.create("label", { id: 6, title: "All dinner" });
 
     server.create("dateRecord", {
       id: "1",
-      date: "02-12-2024",
+      date: "02-17-2024",
       meals: [
         {
           id: 232,
           name: "Chili con carne",
           addInfo: "rice",
-          label: "kids lunch",
+          label: "Kids lunch",
         },
-        { id: 3638, name: "Going out", addInfo: "", label: "lunch" },
+        { id: 3638, name: "Going out", addInfo: "", label: "Lunch" },
       ],
     });
     server.create("dateRecord", {
       id: "2",
-      date: "02-13-2024",
+      date: "02-18-2024",
       meals: [
         {
           id: 345,
@@ -76,19 +77,19 @@ createServer({
           id: 32,
           name: "Cheese sandwich",
           addInfo: "veg",
-          label: "kids lunch",
+          label: "Kids lunch",
         },
       ],
     });
     server.create("dateRecord", {
       id: "3",
-      date: "02-14-2024",
+      date: "02-21-2024",
       meals: [
         {
           id: 22,
           name: "Pizza",
           addInfo: "",
-          label: "kids lunch",
+          label: "Kids lunch",
         },
       ],
     });

@@ -1,5 +1,6 @@
 import React from "react";
 import ViewRecordForm from "./ViewRecordForm";
+import EditRecordForm from "./EditRecordForm";
 import DeleteRecordForm from "./DeleteRecordForm";
 
 export default function ModalRecordContent({ recipe, afterSave }) {
@@ -22,7 +23,13 @@ export default function ModalRecordContent({ recipe, afterSave }) {
           setModalState={setModalState}
         />
       )}
-      {modalState === "edit" && <h1>This is edit state</h1>}
+      {modalState === "edit" && (
+        <EditRecordForm
+          recipe={recipe}
+          afterSave={afterSave}
+          handlerCancel={() => setModalState("edit")}
+        />
+      )}
     </>
   );
 }

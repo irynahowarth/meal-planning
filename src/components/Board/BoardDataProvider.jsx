@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { produce } from "immer";
+import { produce, current } from "immer";
 import useSWR from "swr";
 
 export const BoardDataContext = React.createContext();
@@ -39,17 +39,32 @@ export default function BoardDataProvider({ children }) {
 
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  async function addRecords(meal) {
+  function deleteRecord(recipe) {
+    const nextRecordsState = produce(records, (draftState) => {
+      const findDate = draftState.find(
+        (record) =>
+          dateFormat(Date.parse(record.date)) === dateFormat(recipe.date)
+      );
+      if (findDate) {
+        findDate.meals = findDate.meals.filter((meal) => meal.id !== recipe.id);
+      }
+      return draftState;
+    });
+    setRecords(nextRecordsState);
+  }
+
+  async function addRecords(meal, mealId) {
     const nextRecordsState = produce(records, (draftState) => {
       const findDate = draftState.find(
         (record) =>
           dateFormat(Date.parse(record.date)) === dateFormat(meal.date)
       );
+
       if (findDate) {
-        findDate.meals.push(meal);
+        findDate.meals.push({ id: mealId, ...meal });
       } else {
         draftState.push({
-          id: crypto.randomUUID(),
+          id: mealId,
           date: meal.date,
           meals: [meal],
         });
@@ -61,10 +76,60 @@ export default function BoardDataProvider({ children }) {
 
     setRecords(nextRecordsState);
   }
+  async function editRecords({ meal, oldDate }) {
+    const compareDate =
+      Date.parse(meal.date) === Date.parse(oldDate) ? meal.date : oldDate;
+
+    const nextRecordsState = produce(records, (draftState) => {
+      const findDate = draftState.find(
+        (record) =>
+          dateFormat(Date.parse(record.date)) === dateFormat(compareDate)
+      );
+
+      const findMealRecord = findDate.meals.find(
+        (el) => el.id == parseInt(meal.id)
+      );
+      findMealRecord.name = meal.name;
+      findMealRecord.addInfo = meal.addInfo;
+      findMealRecord.label = meal.label;
+
+      return draftState;
+    });
+
+    await sleep(1000);
+
+    setRecords(nextRecordsState);
+  }
+
+  function updateRecord(meal, compareDate) {
+    return produce(records, (draftState) => {
+      const findDate = draftState.find(
+        (record) =>
+          dateFormat(Date.parse(record.date)) === dateFormat(compareDate)
+      );
+
+      const findMealRecord = findDate.meals.find(
+        (el) => el.id == parseInt(meal.id)
+      );
+      findMealRecord.name = meal.name;
+      findMealRecord.addInfo = meal.addInfo;
+      findMealRecord.label = meal.label;
+
+      return draftState;
+    });
+  }
+  //update record if the date is not changed
 
   return (
     <BoardDataContext.Provider
-      value={{ records, setRecords, labels, setLabels, addRecords }}
+      value={{
+        records,
+        setRecords,
+        labels,
+        setLabels,
+        addRecords,
+        editRecords,
+      }}
     >
       {children}
     </BoardDataContext.Provider>
@@ -72,5 +137,5 @@ export default function BoardDataProvider({ children }) {
 }
 
 function dateFormat(d) {
-  return new Date(d).toISOString().substr(0, 10);
+  return new Date(d).toISOString().slice(0, 10);
 }
