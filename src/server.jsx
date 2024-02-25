@@ -52,7 +52,7 @@ createServer({
 
     server.create("dateRecord", {
       id: "1",
-      date: "02-17-2024",
+      date: "02-25-2024",
       meals: [
         {
           id: 232,
@@ -65,7 +65,7 @@ createServer({
     });
     server.create("dateRecord", {
       id: "2",
-      date: "02-18-2024",
+      date: "02-26-2024",
       meals: [
         {
           id: 345,
@@ -83,7 +83,7 @@ createServer({
     });
     server.create("dateRecord", {
       id: "3",
-      date: "02-21-2024",
+      date: "02-28-2024",
       meals: [
         {
           id: 22,

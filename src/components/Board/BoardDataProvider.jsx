@@ -14,8 +14,34 @@ const fetcherLabels = async (url) =>
     .then((res) => res.json())
     .then((data) => data.labels);
 
+function reducer(records, action) {
+  return produce(records, (draftRecords) => {
+    switch (action.type) {
+      case "delete-record": {
+        const findDate = draftRecords.find(
+          (record) =>
+            dateFormat(Date.parse(record.date)) ===
+            dateFormat(action.record.date)
+        );
+        if (findDate) {
+          findDate.meals = findDate.meals.filter(
+            (meal) => meal.id !== action.record.id
+          );
+        }
+        break;
+      }
+
+      case "start-records": {
+        action.apiRecords.map((rec) => draftRecords.push(rec));
+        break;
+      }
+    }
+  });
+}
+
 export default function BoardDataProvider({ children }) {
-  const [records, setRecords] = React.useState(null);
+  // const [records, setRecords] = React.useState(null);
+  const [records, dispatch] = React.useReducer(reducer, []);
   const [labels, setLabels] = React.useState(null);
   const {
     data: apiRecords,
@@ -26,7 +52,11 @@ export default function BoardDataProvider({ children }) {
 
   React.useEffect(() => {
     if (typeof apiRecords === "undefined") return;
-    setRecords(apiRecords);
+    // setRecords(apiRecords);
+    dispatch({
+      type: "start-records",
+      apiRecords,
+    });
   }, [apiRecords]);
 
   React.useEffect(() => {
@@ -39,18 +69,25 @@ export default function BoardDataProvider({ children }) {
 
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  function deleteRecord(recipe) {
-    const nextRecordsState = produce(records, (draftState) => {
-      const findDate = draftState.find(
-        (record) =>
-          dateFormat(Date.parse(record.date)) === dateFormat(recipe.date)
-      );
-      if (findDate) {
-        findDate.meals = findDate.meals.filter((meal) => meal.id !== recipe.id);
-      }
-      return draftState;
+  // function deleteRecord(recipe) {
+  //   const nextRecordsState = produce(records, (draftState) => {
+  //     const findDate = draftState.find(
+  //       (record) =>
+  //         dateFormat(Date.parse(record.date)) === dateFormat(recipe.date)
+  //     );
+  //     if (findDate) {
+  //       findDate.meals = findDate.meals.filter((meal) => meal.id !== recipe.id);
+  //     }
+  //     return draftState;
+  //   });
+  //   setRecords(nextRecordsState);
+  // }
+
+  function deleteRecord(record) {
+    dispatch({
+      type: "delete-record",
+      record,
     });
-    setRecords(nextRecordsState);
   }
 
   function addSingleRecord(meal, mealId) {
@@ -78,7 +115,7 @@ export default function BoardDataProvider({ children }) {
 
     await sleep(1000);
 
-    setRecords(nextRecordsState);
+    // setRecords(nextRecordsState);
   }
 
   async function editRecords({ meal, oldDate }) {
@@ -91,13 +128,13 @@ export default function BoardDataProvider({ children }) {
 
     await sleep(1000);
 
-    setRecords(nextRecordsState);
+    // setRecords(nextRecordsState);
   }
 
   //update record if the date is not changed
   function updateRecord(meal, theDate) {
     return produce(records, (draftState) => {
-      console.log(current(draftState));
+      // console.log(current(draftState));
       const findDate = draftState.find(
         (record) => dateFormat(Date.parse(record.date)) === dateFormat(theDate)
       );
@@ -146,7 +183,7 @@ export default function BoardDataProvider({ children }) {
     <BoardDataContext.Provider
       value={{
         records,
-        setRecords,
+
         labels,
         setLabels,
         addRecords,
