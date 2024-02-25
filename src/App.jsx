@@ -4,7 +4,6 @@ import BoardDataProvider from "./components/Board/BoardDataProvider";
 import ModalDataProvider from "./components/Modal/ModalDataProvider";
 import "./server";
 import Sidebar from "./components/Sidebar/Sidebar";
-import Modal from "./components/Modal/Modal";
 
 export default function Mealplan() {
   return (
@@ -25,7 +24,6 @@ export default function Mealplan() {
               </div>
             </div>
           </main>
-          <Modal />
         </div>
       </ModalDataProvider>
     </BoardDataProvider>

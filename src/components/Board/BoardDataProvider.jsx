@@ -183,7 +183,6 @@ export default function BoardDataProvider({ children }) {
     <BoardDataContext.Provider
       value={{
         records,
-
         labels,
         setLabels,
         addRecords,

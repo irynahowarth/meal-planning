@@ -9,7 +9,6 @@ export default function BoardNavBtn({
   function changeDayHandle(e) {
     const btnDataset = e.target.parentNode.dataset.btn || e.target.dataset.btn;
     let numDays = 0;
-    console.log(btnDataset);
     switch (btnDataset) {
       case "prev": {
         numDays = -1;

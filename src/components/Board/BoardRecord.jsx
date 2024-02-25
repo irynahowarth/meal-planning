@@ -1,9 +1,7 @@
 import React from "react";
 import { ModalDataContext } from "../Modal/ModalDataProvider";
-import Modal from "../Modal/Modal";
 import ModalAlt from "../Modal/ModalAlt";
 import ModalRecord from "../Modal/Record/ModalRecordContent";
-import ViewRecordForm from "../Modal/Record/ViewRecordForm";
 
 export default function BoardRecord({ meal, viewDay }) {
   const { setIsOpen, setModalData, setModalView } =
