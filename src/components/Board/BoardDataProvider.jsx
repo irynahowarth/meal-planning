@@ -31,6 +31,23 @@ function reducer(records, action) {
         break;
       }
 
+      case "add-record": {
+        const findDate = draftRecords.find(
+          (record) =>
+            dateFormat(Date.parse(record.date)) === dateFormat(action.meal.date)
+        );
+        if (findDate) {
+          findDate.meals.push({ id: action.mealId, ...action.meal });
+        } else {
+          draftRecords.push({
+            id: action.mealId,
+            date: action.meal.date,
+            meals: [action.meal],
+          });
+        }
+        break;
+      }
+
       case "start-records": {
         action.apiRecords.map((rec) => draftRecords.push(rec));
         break;
@@ -40,7 +57,6 @@ function reducer(records, action) {
 }
 
 export default function BoardDataProvider({ children }) {
-  // const [records, setRecords] = React.useState(null);
   const [records, dispatch] = React.useReducer(reducer, []);
   const [labels, setLabels] = React.useState(null);
   const {
@@ -52,7 +68,6 @@ export default function BoardDataProvider({ children }) {
 
   React.useEffect(() => {
     if (typeof apiRecords === "undefined") return;
-    // setRecords(apiRecords);
     dispatch({
       type: "start-records",
       apiRecords,
@@ -69,20 +84,6 @@ export default function BoardDataProvider({ children }) {
 
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  // function deleteRecord(recipe) {
-  //   const nextRecordsState = produce(records, (draftState) => {
-  //     const findDate = draftState.find(
-  //       (record) =>
-  //         dateFormat(Date.parse(record.date)) === dateFormat(recipe.date)
-  //     );
-  //     if (findDate) {
-  //       findDate.meals = findDate.meals.filter((meal) => meal.id !== recipe.id);
-  //     }
-  //     return draftState;
-  //   });
-  //   setRecords(nextRecordsState);
-  // }
-
   function deleteRecord(record) {
     dispatch({
       type: "delete-record",
@@ -91,31 +92,16 @@ export default function BoardDataProvider({ children }) {
   }
 
   function addSingleRecord(meal, mealId) {
-    return produce(records, (draftState) => {
-      const findDate = draftState.find(
-        (record) =>
-          dateFormat(Date.parse(record.date)) === dateFormat(meal.date)
-      );
-
-      if (findDate) {
-        findDate.meals.push({ id: mealId, ...meal });
-      } else {
-        draftState.push({
-          id: mealId,
-          date: meal.date,
-          meals: [meal],
-        });
-      }
-      return draftState;
+    dispatch({
+      type: "add-record",
+      meal,
+      mealId,
     });
   }
 
   async function addRecords(meal, mealId) {
-    const nextRecordsState = addSingleRecord(meal, mealId);
-
+    addSingleRecord(meal, mealId);
     await sleep(1000);
-
-    // setRecords(nextRecordsState);
   }
 
   async function editRecords({ meal, oldDate }) {
