@@ -30,6 +30,20 @@ function reducer(records, action) {
         }
         break;
       }
+      //without moving to different date
+      case "update-record": {
+        const findDate = draftRecords.find(
+          (record) =>
+            dateFormat(Date.parse(record.date)) === dateFormat(action.theDate)
+        );
+        const findMealRecord = findDate.meals.find(
+          (el) => el.id == parseInt(action.meal.id)
+        );
+        findMealRecord.name = action.meal.name;
+        findMealRecord.addInfo = action.meal.addInfo;
+        findMealRecord.label = action.meal.label;
+        break;
+      }
 
       case "add-record": {
         const findDate = draftRecords.find(
@@ -119,20 +133,10 @@ export default function BoardDataProvider({ children }) {
 
   //update record if the date is not changed
   function updateRecord(meal, theDate) {
-    return produce(records, (draftState) => {
-      // console.log(current(draftState));
-      const findDate = draftState.find(
-        (record) => dateFormat(Date.parse(record.date)) === dateFormat(theDate)
-      );
-
-      const findMealRecord = findDate.meals.find(
-        (el) => el.id == parseInt(meal.id)
-      );
-      findMealRecord.name = meal.name;
-      findMealRecord.addInfo = meal.addInfo;
-      findMealRecord.label = meal.label;
-
-      return draftState;
+    dispatch({
+      type: "update-record",
+      meal,
+      theDate,
     });
   }
 
