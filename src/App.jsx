@@ -4,19 +4,33 @@ import BoardDataProvider from "./components/Board/BoardDataProvider";
 import ModalDataProvider from "./components/Modal/ModalDataProvider";
 import "./server";
 import Sidebar from "./components/Sidebar/Sidebar";
-import { DndContext, closestCenter } from "@dnd-kit/core";
+import {
+  DndContext,
+  closestCenter,
+  useSensors,
+  useSensor,
+  PointerSensor,
+} from "@dnd-kit/core";
 
 function handleDragEnd(event) {
-  console.log(event.over.id);
+  console.log(event);
 }
 
 export default function Mealplan() {
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    })
+  );
   return (
     <BoardDataProvider>
       <ModalDataProvider>
         <DndContext
           onDragEnd={handleDragEnd}
           collisionDetection={closestCenter}
+          sensors={sensors}
         >
           <div className="flex">
             <Sidebar />

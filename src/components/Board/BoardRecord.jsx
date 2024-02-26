@@ -8,11 +8,11 @@ export default function BoardRecord({ meal, viewDay }) {
   const [open, setOpen] = React.useState(false);
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: meal.id + viewDay.valueOf(),
+    parent: viewDay,
   });
   const style = {
     transform: CSS.Translate.toString(transform),
   };
-
   return (
     <>
       <ModalAlt open={open} onOpenChange={setOpen}>
@@ -21,7 +21,6 @@ export default function BoardRecord({ meal, viewDay }) {
           ref={setNodeRef}
           style={style}
           {...listeners}
-          onClick={() => console.log("tre")}
           {...attributes}
         >
           <div>{meal.name}</div>
