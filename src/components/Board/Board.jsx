@@ -2,6 +2,13 @@ import React from "react";
 import BoardHeader from "./BoardHeader";
 import BoardColumn from "./BoardColumn";
 import { BoardDataContext } from "../Board/BoardDataProvider";
+import {
+  DndContext,
+  closestCenter,
+  useSensors,
+  useSensor,
+  PointerSensor,
+} from "@dnd-kit/core";
 
 const todayDate = new Date(Date.now());
 
@@ -9,7 +16,25 @@ export default function Board() {
   const [viewWeek, setViewWeek] = React.useState([]);
   const [viewToday, setViewToday] = React.useState(todayDate);
 
-  const { records } = React.useContext(BoardDataContext);
+  const { moveRecord, records } = React.useContext(BoardDataContext);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    })
+  );
+
+  async function handleDragEnd(event) {
+    if (event.active.id === event.over?.id) return;
+    const meal = {
+      ...event.active.data.current.record,
+      date: new Date(event.over.id).toISOString().slice(0, 10),
+    };
+    const theDate = event.active.data.current.oldDate;
+    await moveRecord(meal, theDate);
+  }
 
   React.useEffect(() => {
     setViewWeek(getCurrentWeek(viewToday));
@@ -62,21 +87,27 @@ export default function Board() {
           })}
         </div>
       </div>
-      <div className="grid  grid-cols-7	gap-px h-full bg-gray-200">
-        {viewWeek.map((viewDay) => {
-          const dayRecords = records?.find((rec) => {
-            return dateCompare(viewDay, new Date(rec.date));
-          });
+      <DndContext
+        onDragEnd={handleDragEnd}
+        collisionDetection={closestCenter}
+        sensors={sensors}
+      >
+        <div className="grid  grid-cols-7	gap-px h-full bg-gray-200">
+          {viewWeek.map((viewDay) => {
+            const dayRecords = records?.find((rec) => {
+              return dateCompare(viewDay, new Date(rec.date));
+            });
 
-          return (
-            <BoardColumn
-              key={viewDay.valueOf()}
-              viewDay={viewDay}
-              dayRecords={dayRecords}
-            />
-          );
-        })}
-      </div>
+            return (
+              <BoardColumn
+                key={viewDay.valueOf()}
+                viewDay={viewDay}
+                dayRecords={dayRecords}
+              />
+            );
+          })}
+        </div>
+      </DndContext>
     </div>
   );
 }

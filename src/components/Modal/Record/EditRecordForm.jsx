@@ -12,8 +12,6 @@ export default function EditRecordForm({ recipe, afterSave }) {
     setSaving(true);
     const data = Object.fromEntries(new FormData(event.currentTarget));
     await editRecords({ meal: data, oldDate: recipe.date });
-    // console.log(recipe.date);
-    // console.log(data.date);
     afterSave();
   }
   return (

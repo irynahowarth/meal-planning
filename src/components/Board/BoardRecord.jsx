@@ -7,8 +7,11 @@ import { CSS } from "@dnd-kit/utilities";
 export default function BoardRecord({ meal, viewDay }) {
   const [open, setOpen] = React.useState(false);
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: meal.id + viewDay.valueOf(),
-    parent: viewDay,
+    id: meal.id,
+    data: {
+      record: meal,
+      oldDate: new Date(viewDay).toISOString().slice(0, 10),
+    },
   });
   const style = {
     transform: CSS.Translate.toString(transform),

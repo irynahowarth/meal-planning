@@ -188,6 +188,7 @@ export default function BoardDataProvider({ children }) {
         addRecords,
         editRecords,
         deleteRecord,
+        moveRecord,
       }}
     >
       {children}
