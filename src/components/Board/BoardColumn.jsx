@@ -1,5 +1,6 @@
 import React from "react";
 import BoardRecord from "./BoardRecord";
+import { useDroppable } from "@dnd-kit/core";
 
 export default function BoardColumn({ viewDay, dayRecords }) {
   const mealList =
@@ -9,8 +10,10 @@ export default function BoardColumn({ viewDay, dayRecords }) {
         ))
       : null;
 
+  const { isOver, setNodeRef } = useDroppable({ id: viewDay.valueOf() });
+
   return (
-    <div className="py-2 bg-white">
+    <div className="py-2 bg-white" ref={setNodeRef}>
       <div>{mealList}</div>
     </div>
   );

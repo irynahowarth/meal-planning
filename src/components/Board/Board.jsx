@@ -49,7 +49,7 @@ export default function Board() {
   }
 
   return (
-    <div className="board-main w-4/5 bg-white border rounded">
+    <div className="board-main bg-white border rounded">
       <BoardHeader changeViewToday={changeViewToday} viewWeek={viewWeek} />
       <div>
         <div className="grid  grid-cols-7	 leading-6 gap-px text-center border-b text-xs  font-medium text-gray-500 bg-gray-200">
@@ -67,6 +67,7 @@ export default function Board() {
           const dayRecords = records?.find((rec) => {
             return dateCompare(viewDay, new Date(rec.date));
           });
+
           return (
             <BoardColumn
               key={viewDay.valueOf()}
