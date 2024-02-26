@@ -70,9 +70,9 @@ function reducer(records, action) {
           });
         } else {
           draftRecords.push({
-            id: parseInt(action.meal.id),
+            id: Math.floor(Math.random() * 10000),
             date: action.meal.date,
-            meals: [action.meal],
+            meals: [{ id: action.meal.id, ...action.meal }],
           });
         }
         break;
@@ -87,9 +87,9 @@ function reducer(records, action) {
           findDate.meals.push({ id: action.mealId, ...action.meal });
         } else {
           draftRecords.push({
-            id: action.mealId,
+            id: Math.floor(Math.random() * 10000),
             date: action.meal.date,
-            meals: [action.meal],
+            meals: [{ id: action.mealId, ...action.meal }],
           });
         }
         break;
