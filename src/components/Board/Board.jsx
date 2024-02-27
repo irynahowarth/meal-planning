@@ -27,12 +27,15 @@ export default function Board() {
   );
 
   async function handleDragEnd(event) {
-    if (event.active.id === event.over?.id) return;
+    const { active, over } = event;
+    console.log(event);
+
+    if (active.id === over?.id) return;
     const meal = {
-      ...event.active.data.current.record,
-      date: new Date(event.over.id).toISOString().slice(0, 10),
+      ...active.data.current.record,
+      date: new Date(over.id).toISOString().slice(0, 10),
     };
-    const theDate = event.active.data.current.oldDate;
+    const theDate = active.data.current.oldDate;
     await moveRecord(meal, theDate);
   }
 
@@ -97,12 +100,16 @@ export default function Board() {
             const dayRecords = records?.find((rec) => {
               return dateCompare(viewDay, new Date(rec.date));
             });
+            const mealListId = dayRecords?.length
+              ? dayRecords.meals.map((el) => el.id)
+              : [];
 
             return (
               <BoardColumn
                 key={viewDay.valueOf()}
                 viewDay={viewDay}
                 dayRecords={dayRecords}
+                mealListId={mealListId}
               />
             );
           })}
