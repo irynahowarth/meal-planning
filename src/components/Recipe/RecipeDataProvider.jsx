@@ -17,6 +17,7 @@ function reducer(recipes, action) {
         break;
       }
       case "add-recipe": {
+        draftRecipes.push(action.recipe);
         break;
       }
       case "edit-recipe": {
@@ -59,9 +60,24 @@ export default function RecipeDataProvider({ children }) {
       recipeIndex: recipeList.indexOf(recipe),
     });
   }
-  console.log(recipeList);
+  function addRecipe(recipe, recipeId) {
+    const groups = recipe?.group
+      ? recipe.group.split(",").map((el) => +el)
+      : [];
+    groups.push(1);
+    dispatch({
+      type: "add-recipe",
+      recipe: {
+        ...recipe,
+        group: groups,
+        id: recipeId,
+      },
+    });
+  }
   return (
-    <RecipeDataContext.Provider value={{ groupList, recipeList, deleteRecipe }}>
+    <RecipeDataContext.Provider
+      value={{ groupList, recipeList, deleteRecipe, addRecipe }}
+    >
       {children}
     </RecipeDataContext.Provider>
   );
