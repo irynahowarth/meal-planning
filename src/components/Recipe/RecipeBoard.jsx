@@ -3,7 +3,8 @@ import { RecipeDataContext } from "./RecipeDataProvider";
 import RecipeBoardCard from "./RecipeBoardCard";
 
 export default function RecipeBoard() {
-  const { groupList, recipeList } = React.useContext(RecipeDataContext);
+  const { groupList, recipeList, deleteRecipe } =
+    React.useContext(RecipeDataContext);
 
   return (
     <div className="board-main bg-white border rounded">
@@ -22,6 +23,8 @@ export default function RecipeBoard() {
                 title={recipe.name}
                 addInfo={recipe.addInfo}
                 groups={recipeGroups}
+                delRecipe={deleteRecipe}
+                rec={recipe}
               />
             );
           })}
