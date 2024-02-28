@@ -2,7 +2,7 @@ import React from "react";
 import { RecipeDataContext } from "./RecipeDataProvider";
 
 export default function RecipeBoard() {
-  const { groupList, recepieList } = React.useContext(RecipeDataContext);
+  const { groupList, recipeList } = React.useContext(RecipeDataContext);
 
   return (
     <div className="board-main bg-white border rounded">

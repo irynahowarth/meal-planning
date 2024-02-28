@@ -10,14 +10,14 @@ const fetcher = async (url) =>
 
 export default function RecipeDataProvider({ children }) {
   const [groupList, setGroupList] = React.useState([]);
-  const [recepieList, setRecepieList] = React.useState([]);
+  const [recipeList, setRecipeList] = React.useState([]);
 
   const { data: apiRecipes, error, isLoading } = useSWR(`api/recipes`, fetcher);
   const { data: apiGroups } = useSWR(`api/groups`, fetcher);
 
   React.useEffect(() => {
     if (typeof apiRecipes === "undefined") return;
-    setRecepieList(apiRecipes.recipes);
+    setRecipeList(apiRecipes.recipes);
   }, [apiRecipes]);
 
   React.useEffect(() => {
@@ -29,7 +29,7 @@ export default function RecipeDataProvider({ children }) {
   if (isLoading) return <div>loading...</div>;
 
   return (
-    <RecipeDataContext.Provider value={{ groupList, recepieList }}>
+    <RecipeDataContext.Provider value={{ groupList, recipeList }}>
       {children}
     </RecipeDataContext.Provider>
   );

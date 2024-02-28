@@ -6,7 +6,7 @@ import { RecipeDataContext } from "../Recipe/RecipeDataProvider";
 
 export default function Sidebar() {
   const [activeGroup, setActiveGroup] = React.useState(1);
-  const { groupList, recepieList } = React.useContext(RecipeDataContext);
+  const { groupList, recipeList } = React.useContext(RecipeDataContext);
 
   return (
     <div className="sidebar h-screen relative flex flex-col min-w-[220px] ">
@@ -14,7 +14,7 @@ export default function Sidebar() {
         <h1 className="font-extrabold">MealPlan</h1>
       </header>
       <RecipeGroups groups={groupList} setActiveGroup={setActiveGroup} />
-      <RecipeList allRecipes={recepieList} activeGroup={activeGroup} />
+      <RecipeList allRecipes={recipeList} activeGroup={activeGroup} />
       <ModeSwitch />
     </div>
   );
