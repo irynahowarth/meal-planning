@@ -2,7 +2,7 @@ import React from "react";
 import ModalAlt from "../ModalAlt";
 import { Pencil1Icon, TrashIcon } from "@radix-ui/react-icons";
 
-export default function ViewRecipeForm({ recipe, setModalState }) {
+export default function ViewRecipeForm({ recipe, groups, setModalState }) {
   function editBtnHandler() {
     // setModalState("edit");
   }
@@ -25,7 +25,7 @@ export default function ViewRecipeForm({ recipe, setModalState }) {
         <div className="mt-2.5">
           <div className="text-sm font-medium text-gray-900">Groups</div>
           <div>
-            {recipe.groups.map((group) => (
+            {groups.map((group) => (
               <div key={group.id}>{group.title}</div>
             ))}
           </div>

@@ -30,8 +30,7 @@ export default function RecipeBoard() {
             return (
               <RecipeBoardCard
                 key={recipe.id}
-                name={recipe.name}
-                addInfo={recipe.addInfo}
+                recipe={recipe}
                 groups={recipeGroups}
               />
             );

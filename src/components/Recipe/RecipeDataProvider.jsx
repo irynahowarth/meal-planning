@@ -55,6 +55,7 @@ export default function RecipeDataProvider({ children }) {
   if (isLoading) return <div>loading...</div>;
 
   function deleteRecipe(recipe) {
+    console.log(recipeList.indexOf(recipe));
     dispatch({
       type: "delete-recipe",
       recipeIndex: recipeList.indexOf(recipe),
