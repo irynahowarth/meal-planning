@@ -30,11 +30,9 @@ export default function RecipeBoard() {
             return (
               <RecipeBoardCard
                 key={recipe.id}
-                title={recipe.name}
+                name={recipe.name}
                 addInfo={recipe.addInfo}
                 groups={recipeGroups}
-                delRecipe={deleteRecipe}
-                rec={recipe}
               />
             );
           })}
