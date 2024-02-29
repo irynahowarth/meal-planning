@@ -8,7 +8,7 @@ createServer({
     dateRecords: Model,
   },
   seeds(server) {
-    server.create("group", { id: 1, title: "All meals" });
+    server.create("group", { id: 1, title: "Our meals" });
     server.create("group", { id: 2, title: "Kids Fav" });
     server.create("group", { id: 3, title: "Family meals" });
     server.create("group", { id: 4, title: "Adults meals" });
@@ -28,19 +28,19 @@ createServer({
       id: 3,
       name: "Chicken Fajitas",
       addInfo: "Veg+Wraps",
-      group: [1, 3],
+      group: [3],
     });
     server.create("recipe", {
       id: 4,
       name: "Pasta Bolognese",
       addInfo: "Pasta",
-      group: [1, 3, 2],
+      group: [3, 2],
     });
     server.create("recipe", {
       id: 5,
       name: "Pesto Chicken Pasta",
       addInfo: "Pasta",
-      group: [1, 2],
+      group: [2],
     });
 
     server.create("label", { id: 1, title: "Breakfast" });
