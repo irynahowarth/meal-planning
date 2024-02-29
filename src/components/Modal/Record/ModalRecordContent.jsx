@@ -27,7 +27,7 @@ export default function ModalRecordContent({ recipe, afterSave }) {
         <EditRecordForm
           recipe={recipe}
           afterSave={afterSave}
-          handlerCancel={() => setModalState("edit")}
+          handlerCancel={() => setModalState("view")}
         />
       )}
     </>

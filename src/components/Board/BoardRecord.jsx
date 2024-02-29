@@ -32,15 +32,13 @@ export default function BoardRecord({ meal, viewDay }) {
             <span className="text-sm text-blue-700">{meal.label}</span>
           )}
         </ModalAlt.Button>
-        <ModalAlt.Content title="View Meal Record">
-          <ModalRecord
-            recipe={{
-              ...meal,
-              date: new Date(viewDay).toISOString().slice(0, 10),
-            }}
-            afterSave={() => setOpen(false)}
-          />
-        </ModalAlt.Content>
+        <ModalRecord
+          recipe={{
+            ...meal,
+            date: new Date(viewDay).toISOString().slice(0, 10),
+          }}
+          afterSave={() => setOpen(false)}
+        />
       </ModalAlt>
     </>
   );

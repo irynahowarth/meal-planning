@@ -24,10 +24,10 @@ export default function AddRecipeForm({ afterSave }) {
     }
     if (!errorObj.name) {
       await addRecipe(data, recipeId);
+      afterSave();
     } else {
       window.alert(errorObj.name);
     }
-    afterSave();
   }
   return (
     <form action="" onSubmit={handleSubmit}>

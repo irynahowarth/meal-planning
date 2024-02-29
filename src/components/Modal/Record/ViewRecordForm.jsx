@@ -13,7 +13,7 @@ export default function ViewRecordForm({ recipe, afterSave, setModalState }) {
     setModalState("delete");
   }
   return (
-    <>
+    <ModalAlt.Content title="View Record">
       <div className="mt-8">
         <div className="mt-2.5">
           <div className="text-sm font-medium text-gray-900">Date</div>
@@ -48,6 +48,6 @@ export default function ViewRecordForm({ recipe, afterSave, setModalState }) {
           </button>
         </div>
       </div>
-    </>
+    </ModalAlt.Content>
   );
 }

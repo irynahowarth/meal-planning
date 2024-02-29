@@ -1,5 +1,6 @@
 import React from "react";
 import { produce } from "immer";
+import ModalAlt from "../ModalAlt";
 import { BoardDataContext } from "../../Board/BoardDataProvider";
 
 export default function DeleteRecordForm({
@@ -20,7 +21,7 @@ export default function DeleteRecordForm({
   }
 
   return (
-    <>
+    <ModalAlt.Content title="Delete Record">
       <div className="mt-4">
         {`Are you sure you want to delete ${recipe.name} on ${recipe.date}? This cannot be reversed after.`}
       </div>
@@ -38,6 +39,6 @@ export default function DeleteRecordForm({
           Delete
         </button>
       </div>
-    </>
+    </ModalAlt.Content>
   );
 }
