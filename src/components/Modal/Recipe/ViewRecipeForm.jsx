@@ -4,7 +4,7 @@ import { Pencil1Icon, TrashIcon } from "@radix-ui/react-icons";
 
 export default function ViewRecipeForm({ recipe, groups, setModalState }) {
   function editBtnHandler() {
-    // setModalState("edit");
+    setModalState("edit");
   }
   function deleteBtnHandler() {
     setModalState("delete");

@@ -21,6 +21,7 @@ function reducer(recipes, action) {
         break;
       }
       case "edit-recipe": {
+        console.log(action.recipe);
         break;
       }
       case "start-recipes": {
@@ -74,9 +75,17 @@ export default function RecipeDataProvider({ children }) {
       },
     });
   }
+
+  function editRecipe(recipe) {
+    dispatch({
+      type: "edit-recipe",
+      recipe,
+    });
+  }
+
   return (
     <RecipeDataContext.Provider
-      value={{ groupList, recipeList, deleteRecipe, addRecipe }}
+      value={{ groupList, recipeList, deleteRecipe, addRecipe, editRecipe }}
     >
       {children}
     </RecipeDataContext.Provider>
