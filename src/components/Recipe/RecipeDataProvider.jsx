@@ -21,7 +21,12 @@ function reducer(recipes, action) {
         break;
       }
       case "edit-recipe": {
-        console.log(action.recipe);
+        const findRecipe = draftRecipes.find(
+          (el) => el.id == parseInt(action.recipe.id)
+        );
+        findRecipe.name = action.recipe.name;
+        findRecipe.addInfo = action.recipe.addInfo;
+        findRecipe.group = action.recipe.group;
         break;
       }
       case "start-recipes": {
@@ -65,7 +70,6 @@ export default function RecipeDataProvider({ children }) {
     const groups = recipe?.group
       ? recipe.group.split(",").map((el) => +el)
       : [];
-    groups.push(1);
     dispatch({
       type: "add-recipe",
       recipe: {
@@ -77,9 +81,15 @@ export default function RecipeDataProvider({ children }) {
   }
 
   function editRecipe(recipe) {
+    const groups = recipe?.group
+      ? recipe.group.split(",").map((el) => +el)
+      : [];
     dispatch({
       type: "edit-recipe",
-      recipe,
+      recipe: {
+        ...recipe,
+        group: groups,
+      },
     });
   }
 

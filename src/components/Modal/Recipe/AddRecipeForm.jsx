@@ -72,7 +72,7 @@ export default function AddRecipeForm({ afterSave }) {
               >
                 Group
               </label>
-              {groupList.slice(1).map((option) => (
+              {groupList.map((option) => (
                 <div key={option.id}>
                   <input
                     name="group"

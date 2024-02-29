@@ -13,10 +13,7 @@ export default function RecipeBoardCard({ recipe, groups }) {
             <div>{recipe.addInfo}</div>
             <div>
               Groups:
-              {groups.map((group) => {
-                if (+group.id === 1) return;
-                return group.title;
-              })}
+              {groups.map((group) => group.title)}
             </div>
           </div>
         </ModalAlt.Button>

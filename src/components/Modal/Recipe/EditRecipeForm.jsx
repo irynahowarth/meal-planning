@@ -9,11 +9,11 @@ export default function EditRecipeForm({
   afterSave,
   handleCancel,
 }) {
-  const { editRecipe } = React.useContext(RecipeDataContext);
+  const { editRecipe, groupList } = React.useContext(RecipeDataContext);
   const [saving, setSaving] = React.useState(false);
-  const [selectedGroups, setSelectedGroups] = React.useState(groups.slice(1));
-
-  console.log(selectedGroups);
+  const [selectedGroups, setSelectedGroups] = React.useState(
+    groups.map((el) => el.id)
+  );
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -29,7 +29,7 @@ export default function EditRecipeForm({
       errorObj.name = "Name should be at least 5 characters";
     }
     if (!errorObj.name) {
-      await editRecipe({ data });
+      await editRecipe(data);
     } else {
       window.alert(errorObj.name);
     }
@@ -79,7 +79,7 @@ export default function EditRecipeForm({
               >
                 Groups
               </label>
-              {groups.slice(1).map((option) => (
+              {groupList.map((option) => (
                 <div key={option.id}>
                   <input
                     name="group"
